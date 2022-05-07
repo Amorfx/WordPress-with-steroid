@@ -688,4 +688,7 @@ add_action( 'wp_footer', 'the_block_template_skip_link' );
 add_action( 'setup_theme', 'wp_enable_block_templates' );
 add_action( 'wp_loaded', '_add_template_loader_filters' );
 
+// Default action after load register model
+add_action('plugins_loaded', 'wp_register_custom_models');
+
 unset( $filter, $action );

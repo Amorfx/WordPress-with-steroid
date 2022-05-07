@@ -115,6 +115,9 @@ require ABSPATH . WPINC . '/class-wp.php';
 require ABSPATH . WPINC . '/class-wp-error.php';
 require ABSPATH . WPINC . '/pomo/mo.php';
 
+// Custom Models library load
+require ABSPATH . WPINC . '/custom-models/custom-models.php';
+
 /**
  * @global wpdb $wpdb WordPress database abstraction object.
  * @since 0.71
