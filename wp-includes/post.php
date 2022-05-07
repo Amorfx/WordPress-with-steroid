@@ -992,7 +992,7 @@ function get_post( $post = null, $output = OBJECT, $filter = 'raw' ) {
 
 	if ( $post instanceof WP_Post ) {
 		$_post = $post;
-	} elseif ( is_object( $post ) ) {
+	} elseif ( is_object( $post ) && !$post instanceof \WordPress\CustomModels\AbstractPostModel) {
 		if ( empty( $post->filter ) ) {
 			$_post = sanitize_post( $post, 'raw' );
 			$_post = new WP_Post( $_post );
@@ -1001,7 +1001,9 @@ function get_post( $post = null, $output = OBJECT, $filter = 'raw' ) {
 		} else {
 			$_post = WP_Post::get_instance( $post->ID );
 		}
-	} else {
+	} elseif ($post instanceof \WordPress\CustomModels\AbstractPostModel)  {
+        $_post = WP_Post::get_instance( $post->ID );
+    } else {
 		$_post = WP_Post::get_instance( $post );
 	}
 
@@ -1016,6 +1018,10 @@ function get_post( $post = null, $output = OBJECT, $filter = 'raw' ) {
 	} elseif ( ARRAY_N === $output ) {
 		return array_values( $_post->to_array() );
 	}
+
+    if ($output === OBJECT && apply_filters('enabled_return_custom_models', true) && !$_post instanceof \WordPress\CustomModels\AbstractPostModel) {
+        $_post = \WordPress\CustomModels\ModelFactory::create($_post);
+    }
 
 	return $_post;
 }
